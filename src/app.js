@@ -10,7 +10,7 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
-const port = process.env.SERVER_PORT || '5000';
+const port = process.env.SERVER_PORT || '5069';
 app.set('port', port);
 
 app.use(cors());
