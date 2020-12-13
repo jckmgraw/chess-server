@@ -10,7 +10,7 @@ const removePlayersFromLobby = ({ players, playersInLobby, io }) => {
 };
 
 const removePlayerFromLobby = ({ player, playersInLobby, io }) => {
-  console.log(`user "${player}" disconnected`);
+  console.log(`user "${player}" has left the lobby`);
   for (let i = 0; i < playersInLobby.length; i++) {
     if (playersInLobby[i] === player) {
       playersInLobby.splice(i, 1);

@@ -1,3 +1,4 @@
+const isCheckmate = require('./chessLogic/checkmate');
 const ENV = require('./env');
 const { removePlayerFromLobby } = require('./socketHelpers');
 
@@ -20,9 +21,9 @@ const initSocket = (io) => {
           message: 'playerExists',
         });
       } else {
-        console.log('addPlayerToLobbyResponse, success');
         playersInLobby.push(usernameInput);
         username = usernameInput;
+        console.log(`${username} has joined the lobby`);
         io.emit('addPlayerToLobbyResponse', {
           username,
           id,
@@ -77,10 +78,23 @@ const initSocket = (io) => {
 
     socket.on('processMove', (data) => {
       console.log(JSON.stringify(data));
+      const { whosTurn, board } = data;
       socket.broadcast.emit('board', data);
+      // TODO: circular dependency issues
+      // let king; // whosTurn is toggled client-side
+      // if (whosTurn === 'white') {
+      //   king = ENV.BLACK_KING;
+      // } else if (whosTurn === 'black') {
+      //   king = ENV.WHITE_KING;
+      // }
+      // console.log(`whosTurn: ${whosTurn}, king: ${king}`);
+      // if (isCheckmate({ board, king })) {
+      //   console.log('CHECKMATE MOTHER FUCKER');
+      // }
     });
 
     socket.on('disconnect', () => {
+      console.log(`"${username}" lost connection`);
       removePlayerFromLobby({ player: username, playersInLobby, io });
     });
   });
