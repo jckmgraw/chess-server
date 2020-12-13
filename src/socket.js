@@ -1,4 +1,5 @@
 const ENV = require('./env');
+const { removePlayerFromLobby } = require('./socketHelpers');
 
 const board = [];
 const playersInLobby = [];
@@ -39,24 +40,48 @@ const initSocket = (io) => {
         challenger.status === ENV.CHALLENGE_STATUS_ACCEPTED &&
         challengee.status === ENV.CHALLENGE_STATUS_ACCEPTED
       ) {
-        console.log('TODO: set interval and start game in X seconds');
+        // TODO: removePlayersFromLobby({players, playersInLobby, io})
+        removePlayerFromLobby({
+          player: challenger.username,
+          playersInLobby,
+          io,
+        });
+        removePlayerFromLobby({
+          player: challengee.username,
+          playersInLobby,
+          io,
+        });
+        let countdown = 6;
+        const interval = setInterval(() => {
+          countdown -= 1;
+          if (countdown < 0) countdown = 0;
+          console.log(`Game starts in ${countdown} seconds`);
+          io.emit('game', {
+            playerWhite: challenger.username,
+            playerBlack: challengee.username,
+            status: ENV.GAME_STATUS_COUNTDOWN,
+            countdown,
+          });
+        }, 1000);
+        setTimeout(() => {
+          console.log('GAME_STATUS_GO');
+          io.emit('game', {
+            playerWhite: challenger.username,
+            playerBlack: challengee.username,
+            status: ENV.GAME_STATUS_GO,
+          });
+          clearInterval(interval);
+        }, 6500);
       }
     });
 
     socket.on('processMove', (data) => {
       console.log(JSON.stringify(data));
-      io.emit('board', data);
+      socket.broadcast.emit('board', data);
     });
 
     socket.on('disconnect', () => {
-      console.log(`user "${username}" disconnected`);
-      for (let i = 0; i < playersInLobby.length; i++) {
-        if (playersInLobby[i] === username) {
-          playersInLobby.splice(i, 1);
-          break;
-        }
-      }
-      io.emit('setPlayersInLobby', playersInLobby);
+      removePlayerFromLobby({ player: username, playersInLobby, io });
     });
   });
 };

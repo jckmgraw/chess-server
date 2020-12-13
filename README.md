@@ -9,6 +9,6 @@
 - play against computer option
 - deploy
 - user login, stats, etc.
-- game timer
+- game timer & countdowns synced with dateTime; not pushed
 - get notified if server starts getting traffic (99.99% chance that will not happen) and make it scaleable
 - ...
