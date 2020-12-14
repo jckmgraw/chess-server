@@ -6,6 +6,8 @@ const board = [];
 const playersInGame = []; // TODO
 const playersInLobby = [];
 const games = [];
+const countdowns = [];
+const id = 0;
 
 const initSocket = (io) => {
   io.on('connection', (socket) => {
