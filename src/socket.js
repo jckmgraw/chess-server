@@ -3,6 +3,7 @@ const ENV = require('./env');
 const { removePlayerFromLobby } = require('./socketHelpers');
 
 const board = [];
+const playersInGame = []; // TODO
 const playersInLobby = [];
 const games = [];
 
@@ -10,6 +11,10 @@ const initSocket = (io) => {
   io.on('connection', (socket) => {
     console.log('user connected');
     let username = '';
+
+    socket.on('getLobby', (data) => {
+      socket.emit('setPlayersInLobby', playersInLobby);
+    });
 
     socket.on('addPlayerToLobby', (data) => {
       const { usernameInput, id } = data;
@@ -52,10 +57,12 @@ const initSocket = (io) => {
           playersInLobby,
           io,
         });
-        let countdown = 6;
+        let countdown = 2;
         const interval = setInterval(() => {
           countdown -= 1;
-          if (countdown < 0) countdown = 0;
+          if (countdown < 0) {
+            countdown = 0;
+          }
           console.log(`Game starts in ${countdown} seconds`);
           io.emit('game', {
             playerWhite: challenger.username,
@@ -72,8 +79,16 @@ const initSocket = (io) => {
             status: ENV.GAME_STATUS_GO,
           });
           clearInterval(interval);
-        }, 6500);
+        }, 2500);
       }
+    });
+
+    socket.on('gameOver', (data) => {
+      socket.broadcast.emit('gameOver', data);
+      const { playerWhite, playerBlack } = data;
+      playersInLobby.push(playerWhite);
+      playersInLobby.push(playerBlack);
+      // TODO: remove players from 'playersInGame'
     });
 
     socket.on('processMove', (data) => {
@@ -81,6 +96,7 @@ const initSocket = (io) => {
       const { whosTurn, board } = data;
       socket.broadcast.emit('board', data);
       // TODO: circular dependency issues
+      //       implementing client-side for now
       // let king; // whosTurn is toggled client-side
       // if (whosTurn === 'white') {
       //   king = ENV.BLACK_KING;
