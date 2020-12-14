@@ -9,15 +9,27 @@ const initSocket = require('./socket');
 const express = require('express');
 const socketIO = require('socket.io');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3069;
 const INDEX = '/index.html';
 
 const server = express()
   // .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-const io = socketIO(server);
-io.set('origins', 'http://localhost:3000');
+const io = socketIO(server, {
+  origins: ['http://localhost:3000'],
+  // handlePreflightRequest: (req, res) => {
+  //   res.writeHead(200, {
+  //     'Access-Control-Allow-Origin': 'http://localhost:3000',
+  //     'Access-Control-Allow-Methods': 'GET,POST',
+  //     'Access-Control-Allow-Headers':
+  //       'Origin, X-Requested-With, Content-Type, Accept',
+  //     'Access-Control-Allow-Credentials': true,
+  //   });
+  //   res.end();
+  // },
+});
+// io.set('origins', 'http://localhost:3000');
 
 initSocket(io);
 
