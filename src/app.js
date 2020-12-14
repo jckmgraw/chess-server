@@ -17,19 +17,19 @@ const server = express()
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 const io = socketIO(server, {
-  origins: ['http://localhost:3000'],
+  // origins: ['http://127.0.0.1:3000'],
   handlePreflightRequest: (req, res) => {
     res.writeHead(200, {
-      'Access-Control-Allow-Origin': 'http://localhost:3000',
+      'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST',
-      'Access-Control-Allow-Headers':
-        'Origin, X-Requested-With, Content-Type, Accept',
-      // 'Access-Control-Allow-Credentials': true,
     });
     res.end();
   },
 });
 // io.set('origins', 'http://localhost:3000');
+// 'Access-Control-Allow-Headers':
+//   'Origin, X-Requested-With, Content-Type, Accept',
+// 'Access-Control-Allow-Credentials': true,
 
 initSocket(io);
 
