@@ -1,29 +1,47 @@
 require('dotenv').config();
-// const express = require('express');
 // const bodyParser = require('body-parser');
-const cors = require('cors');
+// const cors = require('cors');
 // const morgan = require('morgan');
 // const helmet = require('helmet');
-const initSocket = require('./socket');
 
 const express = require('express');
-const socketIO = require('socket.io');
+const path = require('path');
+const app = express();
 
-const PORT = process.env.PORT || 3069;
-const INDEX = '/index.html';
+console.log(path.join(__dirname, '../build'));
 
-const server = express()
-  .use(cors())
-  // .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+app.use(express.static(path.join(__dirname, '../build')));
 
-const io = socketIO(server, { cors: true, origins: ['http://127.0.0.1:3000'] });
-// io.set('origins', 'http://localhost:3000');
-// 'Access-Control-Allow-Headers':
-//   'Origin, X-Requested-With, Content-Type, Accept',
-// 'Access-Control-Allow-Credentials': true,
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
 
-initSocket(io);
+app.listen(9000);
+
+///////////////////////////////////
+
+// const initSocket = require('./socket');
+
+// const express = require('express');
+// const socketIO = require('socket.io');
+
+// const PORT = process.env.PORT || 3000;
+// console.log(path.join(__dirname, '../build', 'index.html'));
+
+// const server = express()
+//   .use(cors())
+//   .use((req, res) =>
+//     res.sendFile(path.join(__dirname, '../build', 'index.html'))
+//   )
+//   .listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+// const io = socketIO(server);
+// // io.set('origins', 'http://localhost:3000');
+// // 'Access-Control-Allow-Headers':
+// //   'Origin, X-Requested-With, Content-Type, Accept',
+// // 'Access-Control-Allow-Credentials': true,
+
+// initSocket(io);
 
 // app.use(cors());
 // app.use(morgan('dev'));
