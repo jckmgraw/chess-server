@@ -6,16 +6,15 @@ const socketIO = require('socket.io');
 const initSocket = require('./socket');
 
 const PORT = process.env.PORT || 3000;
-console.log(path.join(__dirname, '../build', 'index.html'));
 
 const server = express()
-  .use(express.static(path.join(__dirname, 'build')))
+  .use(express.static(path.join(__dirname, '../build')))
   .use((req, res) =>
-    res.sendFile(path.join(__dirname, './build', 'index.html'))
+    res.sendFile(path.join(__dirname, '../build', 'index.html'))
   )
   .get('/', function (req, res) {
     console.log('.get()');
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../build', 'index.html'));
   })
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
