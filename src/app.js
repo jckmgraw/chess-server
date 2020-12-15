@@ -1,78 +1,24 @@
 require('dotenv').config();
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const morgan = require('morgan');
-// const helmet = require('helmet');
-
 const express = require('express');
 const path = require('path');
-const app = express();
+const socketIO = require('socket.io');
 
-console.log(path.join(__dirname, '../build'));
+const initSocket = require('./socket');
 
-app.use(express.static(path.join(__dirname, '../build')));
+const PORT = process.env.PORT || 3000;
+console.log(path.join(__dirname, '../build', 'index.html'));
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../build', 'index.html'));
-});
+const server = express()
+  .use(express.static(path.join(__dirname, 'build')))
+  .use((req, res) =>
+    res.sendFile(path.join(__dirname, './build', 'index.html'))
+  )
+  .get('/', function (req, res) {
+    console.log('.get()');
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  })
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-app.listen(9000);
+const io = socketIO(server);
 
-///////////////////////////////////
-
-// const initSocket = require('./socket');
-
-// const express = require('express');
-// const socketIO = require('socket.io');
-
-// const PORT = process.env.PORT || 3000;
-// console.log(path.join(__dirname, '../build', 'index.html'));
-
-// const server = express()
-//   .use(cors())
-//   .use((req, res) =>
-//     res.sendFile(path.join(__dirname, '../build', 'index.html'))
-//   )
-//   .listen(PORT, () => console.log(`Listening on ${PORT}`));
-
-// const io = socketIO(server);
-// // io.set('origins', 'http://localhost:3000');
-// // 'Access-Control-Allow-Headers':
-// //   'Origin, X-Requested-With, Content-Type, Accept',
-// // 'Access-Control-Allow-Credentials': true,
-
-// initSocket(io);
-
-// app.use(cors());
-// app.use(morgan('dev'));
-// app.use(express.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
-// app.use(helmet());
-
-// https://enable-cors.org/server_expressjs.html
-// app.use(function (req, res, next) {
-//   res.header('Access-Control-Allow-Origin', 'localhost');
-//   res.header(
-//     'Access-Control-Allow-Headers',
-//     'Origin, X-Requested-With, Content-Type, Accept'
-//   );
-//   next();
-// });
-
-// app.use((error, req, res, next) => {
-//   console.log(`[ERROR]: ${error.stack}`);
-//   return res.status(500).json({
-//     status: 500,
-//     error: error.toString(),
-//     message: 'See console logs for error.stack',
-//   });
-// });
-
-// if (process.env.NODE_ENV === 'development') {
-// }
-// http.listen(port, () => {
-//   console.log(`listening on: ${port}`);
-// });
-
-// module.exports = app;
+initSocket(io);

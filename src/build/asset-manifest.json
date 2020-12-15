@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "./static/css/main.9420ae6c.chunk.css",
+    "main.js": "./static/js/main.17e45102.chunk.js",
+    "main.js.map": "./static/js/main.17e45102.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.283d9c88.js",
+    "runtime-main.js.map": "./static/js/runtime-main.283d9c88.js.map",
+    "static/js/2.a0542001.chunk.js": "./static/js/2.a0542001.chunk.js",
+    "static/js/2.a0542001.chunk.js.map": "./static/js/2.a0542001.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.972c024b1def4989d783eaf4f08b3592.js": "./precache-manifest.972c024b1def4989d783eaf4f08b3592.js",
+    "service-worker.js": "./service-worker.js",
+    "static/css/main.9420ae6c.chunk.css.map": "./static/css/main.9420ae6c.chunk.css.map",
+    "static/js/2.a0542001.chunk.js.LICENSE.txt": "./static/js/2.a0542001.chunk.js.LICENSE.txt",
+    "static/media/queen_white.png": "./static/media/queen_white.046de595.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.283d9c88.js",
+    "static/js/2.a0542001.chunk.js",
+    "static/css/main.9420ae6c.chunk.css",
+    "static/js/main.17e45102.chunk.js"
+  ]
+}
