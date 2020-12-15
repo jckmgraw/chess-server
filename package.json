@@ -6,7 +6,7 @@
   "main": "src/app.js",
   "scripts": {
     "dev": "nodemon src/app.js --exec babel-node",
-    "start": "ntl",
+    "start": "node src/app.js",
     "build": "babel src -d dist",
     "prod": "yarn build; node dist/app.js"
   },
