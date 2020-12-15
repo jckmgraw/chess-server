@@ -17,16 +17,7 @@ const server = express()
   // .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-const io = socketIO(server, {
-  origins: ['192.168.4.70:3000'],
-  handlePreflightRequest: (req, res) => {
-    res.writeHead(200, {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET,POST',
-    });
-    res.end();
-  },
-});
+const io = socketIO(server, { origins: '*:*' });
 // io.set('origins', 'http://localhost:3000');
 // 'Access-Control-Allow-Headers':
 //   'Origin, X-Requested-With, Content-Type, Accept',
