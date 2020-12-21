@@ -13,4 +13,4 @@ const server = express().listen(PORT, () =>
 
 const io = socketIO(server);
 
-initSocket(io);
+initSocket({ io, isDev: true });

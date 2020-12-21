@@ -9,7 +9,7 @@ const games = [];
 const countdowns = [];
 const id = 0;
 
-const initSocket = (io) => {
+const initSocket = ({ io, isDev }) => {
   io.on('connection', (socket) => {
     console.log('user connected');
     let username = '';

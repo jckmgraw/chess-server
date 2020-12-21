@@ -20,4 +20,4 @@ const server = express()
 
 const io = socketIO(server);
 
-initSocket(io);
+initSocket({ io, isDev: false });
